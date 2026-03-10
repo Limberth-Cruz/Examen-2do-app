@@ -4,7 +4,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask_admin import BaseView, expose
 
 from .extensions import admin_panel, db
-from .models import User
+from .models import User,Cliente
 
 # =========================
 # CRUD protegido para admin
@@ -13,7 +13,6 @@ class SecurityModelView(ModelView):
     column_exclude_list = ["password","ventas"]
 
 
-    
 
 
 
@@ -34,12 +33,47 @@ class RoleModelView(ModelView):
     
 
 
+class ClienteAdmin(RoleModelView):
+
+    column_exclude_list = ["ventas"]
+    form_excluded_columns = ["ventas"]
 
 
+class VenderView(BaseView):
+    @expose('/', methods=['GET', 'POST'])
+    def index(self):
+        clientes = Cliente.query.all()
+        usuarios = User.query.all()  
 
+        if request.method == 'POST':
+            # Productos seleccionados
+            carrito_ids = request.form.getlist('producto')
+            id_cliente = request.form.get('cliente')
+            id = request.form.get('user')  
 
+            # Tomar cantidades según los productos seleccionados
+            cantidades = []
+            for pid in carrito_ids:
+                cantidad = int(request.form.get(f'cantidad_{pid}', 0))
+                cantidades.append(cantidad)
 
+            # Validar que haya al menos un producto con cantidad > 0
+            if not carrito_ids or not any(c > 0 for c in cantidades):
+                flash('Seleccione productos y cantidades', 'danger')
+                return redirect(url_for('.index'))
 
+            
+
+            db.session.commit()
+
+           
+
+        # GET: mostrar formulario
+        return self.render(
+            'venta.html',
+            clientes=clientes,
+            usuarios=usuarios  # <-- pasar usuarios
+        )
     
 # =========================
 # Registrar todas las vistas en admin
@@ -48,4 +82,8 @@ def configuracion_admin():
     # CRUD normales
     # Solo admin ve usuarios
     admin_panel.add_view(SecurityModelView(User, db.session))
-    
+    admin_panel.add_view(ClienteAdmin(Cliente, db.session))
+    # Vista personalizada de ventas también visible para estos roles
+    admin_panel.add_view(VenderView(name='Vender', endpoint='vender'))
+
+
