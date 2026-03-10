@@ -14,4 +14,6 @@ Se agregó la tabla **Venta** y class VenderView(BaseView): en admin.py y class 
 
 Se añadió **ventas.py** para procesar la lógica de ventas y **venta.html** para visualizar las ventas en el sistema.
 
+Se creó también **ticket.html** para visualizar el comprobante de cada venta.
+
 
