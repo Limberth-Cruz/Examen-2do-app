@@ -53,7 +53,37 @@ class Venta(db.Model):
     id = db.Column(db.Integer, db.ForeignKey("user.id"))  # <-- apunta a User.id
     total = db.Column(db.Numeric(10,2))
 
+    detalles = db.relationship("DetalleVenta", backref="venta")
 
     # Relaciones para acceder a nombre directamente
     cliente = db.relationship("Cliente", backref="ventas")
     user = db.relationship("User", backref="ventas")  # <-- relación con User
+
+
+
+# TABLA DETALLE_VENTA
+# =========================
+class DetalleVenta(db.Model):
+
+    __tablename__ = "detalle_venta"
+
+    id_detalle = db.Column(db.Integer, primary_key=True)
+
+    id_venta = db.Column(
+        db.Integer,
+        db.ForeignKey("venta.id_venta")
+    )
+
+    id_producto = db.Column(
+        db.Integer,
+        db.ForeignKey("producto.id_producto")
+    )
+
+    cantidad = db.Column(db.Integer, nullable=False)
+
+    precio_unitario = db.Column(db.Numeric(10,2))
+
+    subtotal = db.Column(db.Numeric(10,2))
+
+    producto = db.relationship("Producto")
+
