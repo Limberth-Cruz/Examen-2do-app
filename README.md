@@ -16,4 +16,5 @@ Se añadió **ventas.py** para procesar la lógica de ventas y **venta.html** pa
 
 Se creó también **ticket.html** para visualizar el comprobante de cada venta.
 
+Tabla **Venta**, relacionada con **DetalleVenta** para registrar los productos vendidos.
 
