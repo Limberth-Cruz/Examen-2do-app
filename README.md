@@ -4,6 +4,9 @@ Examen 2do
 
 **Autor:** Limberth Cruz Canaviri  
 
-## Descripción
+
+# Descripción
 Primer paso del módulo de ventas.  
 Se creó la tabla **Cliente**, necesaria para poder registrar ventas en el sistema.
+Se agregó la tabla **Venta** y class VenderView(BaseView): en admin.py y class Venta(db.Model): para registrar ventas.
+

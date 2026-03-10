@@ -41,3 +41,19 @@ class Cliente(db.Model):
 
     def __repr__(self):
         return self.nombre
+    
+# TABLA VENTA
+# =========================
+class Venta(db.Model):
+    __tablename__ = "venta"
+
+    id_venta = db.Column(db.Integer, primary_key=True)
+    fecha = db.Column(db.Date, nullable=False)
+    id_cliente = db.Column(db.Integer, db.ForeignKey("cliente.id_cliente"))
+    id = db.Column(db.Integer, db.ForeignKey("user.id"))  # <-- apunta a User.id
+    total = db.Column(db.Numeric(10,2))
+
+
+    # Relaciones para acceder a nombre directamente
+    cliente = db.relationship("Cliente", backref="ventas")
+    user = db.relationship("User", backref="ventas")  # <-- relación con User
