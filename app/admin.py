@@ -4,7 +4,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask_admin import BaseView, expose
 
 from .extensions import admin_panel, db
-from .models import User
+from .models import User,Cliente
 
 # =========================
 # CRUD protegido para admin
@@ -13,7 +13,6 @@ class SecurityModelView(ModelView):
     column_exclude_list = ["password","ventas"]
 
 
-    
 
 
 
@@ -34,9 +33,10 @@ class RoleModelView(ModelView):
     
 
 
+class ClienteAdmin(RoleModelView):
 
-
-
+    column_exclude_list = ["ventas"]
+    form_excluded_columns = ["ventas"]
 
 
 
@@ -48,4 +48,6 @@ def configuracion_admin():
     # CRUD normales
     # Solo admin ve usuarios
     admin_panel.add_view(SecurityModelView(User, db.session))
-    
+    admin_panel.add_view(ClienteAdmin(Cliente, db.session))
+
+

@@ -25,10 +25,19 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.password, password)
 
 
-#clase
 
-    
+# TABLA CLIENTE
+# =========================
+class Cliente(db.Model):
+
+    __tablename__ = "cliente"
+
+    id_cliente = db.Column(db.Integer, primary_key=True)
+
+    nombre = db.Column(db.String(100))
+
+    telefono = db.Column(db.String(20))
+
 
     def __repr__(self):
         return self.nombre
-
