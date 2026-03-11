@@ -5,7 +5,7 @@ from flask_admin import BaseView, expose
 
 from .extensions import admin_panel, db
 from .models import User,Cliente
-
+from .models import User, Proveedor, Cliente
 from .models import User,Proveedor
 
 # =========================
@@ -27,6 +27,8 @@ class SecurityModelView(ModelView):
 
 # por defecto rol aqui
 class RoleModelView(ModelView):
+class ClienteAdmin(RoleModelView):
+
 
     allowed_roles = ["admin", "vendedor", "cajero"]  
 
