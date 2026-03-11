@@ -37,7 +37,6 @@ class RoleModelView(ModelView):
 
 
 
-
     
 # =========================
 # Registrar todas las vistas en admin
