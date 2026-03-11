@@ -3,13 +3,14 @@ from .extensions import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
+
 # =========================
 # TABLA USUARIO
 # =========================
 class User(db.Model, UserMixin):
-
-    id = db.Column(db.Integer, primary_key=True)
-
+    
+  id = db.Column(db.Integer, primary_key=True)
+  
     username = db.Column(db.String(100), unique=True, nullable=False)
 
     password = db.Column(db.String(250), nullable=False)
@@ -53,7 +54,7 @@ class Proveedor(db.Model):
 # =========================
 class Cliente(db.Model):
 
-    __tablename__ = "cliente"
+    _tablename_ = "cliente"
 
     id_cliente = db.Column(db.Integer, primary_key=True)
 
@@ -62,7 +63,7 @@ class Cliente(db.Model):
     telefono = db.Column(db.String(20))
 
 
-    def __repr__(self):
+    def _repr_(self):
         return self.nombre
     
 
@@ -117,6 +118,23 @@ class Producto(db.Model):
 # =========================
 class Venta(db.Model):
     __tablename__ = "venta"
+
+# =========================
+# TABLA PROVEEDOR
+# =========================
+class Proveedor(db.Model):
+
+    _tablename_ = "proveedor"
+
+    id_proveedor = db.Column(db.Integer, primary_key=True)
+
+    nombre = db.Column(db.String(150), nullable=False)
+
+    telefono = db.Column(db.String(20))
+
+    direccion = db.Column(db.String(200))
+-------------------------------------------------------------------------
+para clientes:
 
     id_venta = db.Column(db.Integer, primary_key=True)
     fecha = db.Column(db.Date, nullable=False)
