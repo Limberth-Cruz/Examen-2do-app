@@ -29,8 +29,7 @@ class SecurityModelView(ModelView):
 class RoleModelView(ModelView):
 class ClienteAdmin(RoleModelView):
 
-
-    allowed_roles = ["admin", "vendedor", "cajero"]  
+ allowed_roles = ["admin", "vendedor", "cajero"]  
 
     def is_accessible(self):
         return current_user.is_authenticated and current_user.role in self.allowed_roles
