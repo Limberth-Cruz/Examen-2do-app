@@ -8,23 +8,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # =========================
 class User(db.Model, UserMixin):
 
-<<<<<<< HEAD
-    id = db.Column(db.Integer, primary_key=True)
-
-    username = db.Column(db.String(100), unique=True, nullable=False)
-
-    password = db.Column(db.String(250), nullable=False)
-
-    name = db.Column(db.String(150), nullable=False)  
-
-=======
     __tablename__ = "user"
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(250), nullable=False)
     name = db.Column(db.String(150), nullable=False)
->>>>>>> Modulo-producto-MARCO-CS
     role = db.Column(db.String(50), default="user")
 
     def set_password(self, password):
@@ -34,11 +23,6 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.password, password)
 
 
-<<<<<<< HEAD
-#clase
-
-  
-=======
 # =========================
 # TABLA PROVEEDOR
 # =========================
@@ -52,13 +36,10 @@ class Proveedor(db.Model):
     direccion = db.Column(db.String(200))
 
     productos = db.relationship("Producto", backref="proveedor")
->>>>>>> Modulo-producto-MARCO-CS
 
     def __repr__(self):
         return self.nombre
 
-<<<<<<< HEAD
-=======
 
 # =========================
 # TABLA CLIENTE
@@ -164,4 +145,3 @@ class DetalleVenta(db.Model):
     subtotal = db.Column(db.Numeric(10, 2))
 
     producto = db.relationship("Producto")
->>>>>>> Modulo-producto-MARCO-CS

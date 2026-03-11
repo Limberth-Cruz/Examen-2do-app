@@ -4,11 +4,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask_admin import BaseView, expose
 
 from .extensions import admin_panel, db
-<<<<<<< HEAD
-from .models import User
-=======
 from .models import User, Producto, Categoria, Proveedor, Cliente, Venta, DetalleVenta
->>>>>>> Modulo-producto-MARCO-CS
 
 # =========================
 # CRUD protegido para admin
@@ -18,13 +14,10 @@ class SecurityModelView(ModelView):
 
 
     
-<<<<<<< HEAD
-=======
     # Opcional: también puedes definir campos que se puedan editar
     form_excluded_columns = ["ventas"]  # evita que aparezca en Create/Edit
     def is_accessible(self):
         return current_user.is_authenticated
->>>>>>> Modulo-producto-MARCO-CS
 
 
 
@@ -37,13 +30,6 @@ class SecurityModelView(ModelView):
 # por defecto rol aqui
 class RoleModelView(ModelView):
 
-<<<<<<< HEAD
-    allowed_roles = ["admin", "vendedor", "cajero"]  
-
-    def is_accessible(self):
-        return current_user.is_authenticated and current_user.role in self.allowed_roles
-    
-=======
     allowed_roles = ["admin", "vendedor", "cajero"]
 
     def is_accessible(self):
@@ -54,16 +40,10 @@ class ClienteAdmin(RoleModelView):
 
     column_exclude_list = ["ventas"]
     form_excluded_columns = ["ventas"]
->>>>>>> Modulo-producto-MARCO-CS
 
 
 
 
-<<<<<<< HEAD
-
-
-    
-=======
 # =========================
 # Vista personalizada para vender
 # =========================
@@ -149,7 +129,6 @@ class VentasRealizadasView(BaseView):
         return self.render('admin/ventas_realizadas.html', ventas=ventas)
 
 
->>>>>>> Modulo-producto-MARCO-CS
 # =========================
 # Registrar todas las vistas en admin
 # =========================
@@ -157,9 +136,6 @@ def configuracion_admin():
     # CRUD normales
     # Solo admin ve usuarios
     admin_panel.add_view(SecurityModelView(User, db.session))
-<<<<<<< HEAD
-    
-=======
     admin_panel.add_view(SecurityModelView(Proveedor, db.session))
 
     admin_panel.add_view(ClienteAdmin(Cliente, db.session))
@@ -170,4 +146,3 @@ def configuracion_admin():
     admin_panel.add_view(VenderView(name='Vender', endpoint='vender'))
 
     admin_panel.add_view(VentasRealizadasView(name='Ventas Realizadas', endpoint='ventas_realizadas'))
->>>>>>> Modulo-producto-MARCO-CS
