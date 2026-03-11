@@ -4,7 +4,11 @@ from flask_admin.contrib.sqla import ModelView
 from flask_admin import BaseView, expose
 
 from .extensions import admin_panel, db
+<<<<<<< HEAD
 from .models import User
+=======
+from .models import User, Producto, Categoria, Proveedor, Cliente, Venta, DetalleVenta
+>>>>>>> Modulo-producto-MARCO-CS
 
 # =========================
 # CRUD protegido para admin
@@ -14,6 +18,13 @@ class SecurityModelView(ModelView):
 
 
     
+<<<<<<< HEAD
+=======
+    # Opcional: también puedes definir campos que se puedan editar
+    form_excluded_columns = ["ventas"]  # evita que aparezca en Create/Edit
+    def is_accessible(self):
+        return current_user.is_authenticated
+>>>>>>> Modulo-producto-MARCO-CS
 
 
 
@@ -26,18 +37,119 @@ class SecurityModelView(ModelView):
 # por defecto rol aqui
 class RoleModelView(ModelView):
 
+<<<<<<< HEAD
     allowed_roles = ["admin", "vendedor", "cajero"]  
 
     def is_accessible(self):
         return current_user.is_authenticated and current_user.role in self.allowed_roles
     
+=======
+    allowed_roles = ["admin", "vendedor", "cajero"]
+
+    def is_accessible(self):
+        return current_user.is_authenticated and current_user.role in self.allowed_roles
+
+
+class ClienteAdmin(RoleModelView):
+
+    column_exclude_list = ["ventas"]
+    form_excluded_columns = ["ventas"]
+>>>>>>> Modulo-producto-MARCO-CS
 
 
 
 
+<<<<<<< HEAD
 
 
     
+=======
+# =========================
+# Vista personalizada para vender
+# =========================
+class VenderView(BaseView):
+    @expose('/', methods=['GET', 'POST'])
+    def index(self):
+        productos = Producto.query.all()
+        clientes = Cliente.query.all()
+        usuarios = User.query.all()  
+
+        if request.method == 'POST':
+            # Productos seleccionados
+            carrito_ids = request.form.getlist('producto')
+            id_cliente = request.form.get('cliente')
+            id = request.form.get('user')  
+
+            # Tomar cantidades según los productos seleccionados
+            cantidades = []
+            for pid in carrito_ids:
+                cantidad = int(request.form.get(f'cantidad_{pid}', 0))
+                cantidades.append(cantidad)
+
+            # Validar que haya al menos un producto con cantidad > 0
+            if not carrito_ids or not any(c > 0 for c in cantidades):
+                flash('Seleccione productos y cantidades', 'danger')
+                return redirect(url_for('.index'))
+
+            # Crear la venta
+            venta = Venta(
+                fecha=db.func.current_date(),
+                id_cliente=id_cliente,
+                id=current_user.id,  # <-- usuario logueado
+                total=0
+            )
+            db.session.add(venta)
+            db.session.flush()  # para obtener id_venta
+
+            total = 0
+            for pid, cantidad in zip(carrito_ids, cantidades):
+                if cantidad <= 0:
+                    continue
+
+                producto = Producto.query.get(pid)
+                if not producto or producto.stock < cantidad:
+                    continue
+
+                subtotal = producto.precio_venta * cantidad
+
+                detalle = DetalleVenta(
+                    id_venta=venta.id_venta,
+                    id_producto=producto.id_producto,
+                    cantidad=cantidad,
+                    precio_unitario=producto.precio_venta,
+                    subtotal=subtotal
+                )
+                db.session.add(detalle)
+
+                # Actualizar stock
+                producto.stock -= cantidad
+                total += subtotal
+
+            venta.total = total
+            db.session.commit()
+
+            # Redirigir al ticket con la venta recién creada
+            return self.render('ticket.html', venta=venta, detalles=venta.detalles)
+
+        # GET: mostrar formulario
+        return self.render(
+            'venta.html',
+            productos=productos,
+            clientes=clientes,
+            usuarios=usuarios  # <-- pasar usuarios
+        )
+
+
+class VentasRealizadasView(BaseView):
+    @expose('/')
+    def index(self):
+        # Traer todas las ventas
+        ventas = Venta.query.order_by(Venta.fecha.desc()).all()
+
+        return self.render('admin/ventas_realizadas.html', ventas=ventas)
+
+
+>>>>>>> Modulo-producto-MARCO-CS
 # =========================
 # Registrar todas las vistas en admin
 # =========================
@@ -45,4 +157,17 @@ def configuracion_admin():
     # CRUD normales
     # Solo admin ve usuarios
     admin_panel.add_view(SecurityModelView(User, db.session))
+<<<<<<< HEAD
     
+=======
+    admin_panel.add_view(SecurityModelView(Proveedor, db.session))
+
+    admin_panel.add_view(ClienteAdmin(Cliente, db.session))
+    admin_panel.add_view(RoleModelView(Categoria, db.session))
+    admin_panel.add_view(RoleModelView(Producto, db.session))
+
+    # Vista personalizada de ventas también visible para estos roles
+    admin_panel.add_view(VenderView(name='Vender', endpoint='vender'))
+
+    admin_panel.add_view(VentasRealizadasView(name='Ventas Realizadas', endpoint='ventas_realizadas'))
+>>>>>>> Modulo-producto-MARCO-CS
