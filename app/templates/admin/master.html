@@ -188,12 +188,12 @@ Rol:
 {% if current_user.role == "admin" %}
 
 <a href="/admin/user/">👤 Usuarios</a>
-<a href="/admin/proveedor/">🚚 Proveedores</a>
 
 {% endif %}
 
 {% if current_user.role in ["admin","vendedor","cajero"] %}
-
+<a href="/admin/cliente/">👥 Clientes</a>
+<a href="/admin/vender/">💰 Ventas</a>
 
 
 {% endif %}
