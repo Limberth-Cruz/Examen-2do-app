@@ -27,7 +27,7 @@ class User(db.Model, UserMixin):
 
 #clase
 
-    
+  
 
     def __repr__(self):
         return self.nombre
