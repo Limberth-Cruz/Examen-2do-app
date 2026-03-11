@@ -17,7 +17,6 @@ class SecurityModelView(ModelView):
 
 
 
-
     def inaccessible_callback(self, name, **kwargs):
         flash("No tienes permisos para acceder a esta sección", "warning")
         return redirect(url_for("auth.login"))
