@@ -18,6 +18,6 @@ Se creó también **ticket.html** para visualizar el comprobante de cada venta.
 
 Tabla **Venta**, relacionada con **DetalleVenta** para registrar los productos vendidos.
 
-Actualizacion modelulo de ventas
+Actualizacion modulo de ventas
 
 
