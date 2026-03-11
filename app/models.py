@@ -46,6 +46,23 @@ class Cliente(db.Model):
 class Venta(db.Model):
     __tablename__ = "venta"
 
+# =========================
+# TABLA PROVEEDOR
+# =========================
+class Proveedor(db.Model):
+
+    _tablename_ = "proveedor"
+
+    id_proveedor = db.Column(db.Integer, primary_key=True)
+
+    nombre = db.Column(db.String(150), nullable=False)
+
+    telefono = db.Column(db.String(20))
+
+    direccion = db.Column(db.String(200))
+-------------------------------------------------------------------------
+para clientes:
+
     id_venta = db.Column(db.Integer, primary_key=True)
     fecha = db.Column(db.Date, nullable=False)
     id_cliente = db.Column(db.Integer, db.ForeignKey("cliente.id_cliente"))
