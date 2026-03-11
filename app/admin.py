@@ -4,11 +4,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask_admin import BaseView, expose
 
 from .extensions import admin_panel, db
-from .models import User,Cliente
-from .models import User, Proveedor, Cliente
 from .models import User, Producto, Categoria, Proveedor, Cliente, Venta, DetalleVenta
-
-from .models import User,Proveedor
 
 # =========================
 # CRUD protegido para admin
@@ -33,13 +29,11 @@ class SecurityModelView(ModelView):
 
 # por defecto rol aqui
 class RoleModelView(ModelView):
-class ClienteAdmin(RoleModelView):
 
- allowed_roles = ["admin", "vendedor", "cajero"]  
+    allowed_roles = ["admin", "vendedor", "cajero"]
 
     def is_accessible(self):
         return current_user.is_authenticated and current_user.role in self.allowed_roles
-    
 
 
 class ClienteAdmin(RoleModelView):

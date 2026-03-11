@@ -3,20 +3,17 @@ from .extensions import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
-
 # =========================
 # TABLA USUARIO
 # =========================
 class User(db.Model, UserMixin):
-    
-  id = db.Column(db.Integer, primary_key=True)
-  
+
+    __tablename__ = "user"
+
+    id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
-
     password = db.Column(db.String(250), nullable=False)
-
-    name = db.Column(db.String(150), nullable=False)  
-
+    name = db.Column(db.String(150), nullable=False)
     role = db.Column(db.String(50), default="user")
 
     def set_password(self, password):
@@ -24,8 +21,6 @@ class User(db.Model, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
-
-
 
 
 # =========================
@@ -36,11 +31,8 @@ class Proveedor(db.Model):
     __tablename__ = "proveedor"
 
     id_proveedor = db.Column(db.Integer, primary_key=True)
-
     nombre = db.Column(db.String(150), nullable=False)
-
     telefono = db.Column(db.String(20))
-
     direccion = db.Column(db.String(200))
 
     productos = db.relationship("Producto", backref="proveedor")
@@ -54,27 +46,24 @@ class Proveedor(db.Model):
 # =========================
 class Cliente(db.Model):
 
-    _tablename_ = "cliente"
+    __tablename__ = "cliente"
 
     id_cliente = db.Column(db.Integer, primary_key=True)
-
     nombre = db.Column(db.String(100))
-
     telefono = db.Column(db.String(20))
 
-
-    def _repr_(self):
+    def __repr__(self):
         return self.nombre
-    
 
 
+# =========================
 # TABLA CATEGORIA
+# =========================
 class Categoria(db.Model):
 
     __tablename__ = "categoria"
 
     id_categoria = db.Column(db.Integer, primary_key=True)
-
     nombre_categoria = db.Column(db.String(100), nullable=False)
 
     productos = db.relationship("Producto", backref="categoria")
@@ -83,13 +72,14 @@ class Categoria(db.Model):
         return self.nombre_categoria
 
 
+# =========================
 # TABLA PRODUCTO
+# =========================
 class Producto(db.Model):
 
     __tablename__ = "producto"
 
     id_producto = db.Column(db.Integer, primary_key=True)
-
     nombre_producto = db.Column(db.String(200), nullable=False)
 
     id_categoria = db.Column(
@@ -102,54 +92,36 @@ class Producto(db.Model):
         db.ForeignKey("proveedor.id_proveedor")
     )
 
-    precio_compra = db.Column(db.Numeric(10,2))
-
-    precio_venta = db.Column(db.Numeric(10,2))
-
+    precio_compra = db.Column(db.Numeric(10, 2))
+    precio_venta = db.Column(db.Numeric(10, 2))
     stock = db.Column(db.Integer, default=0)
 
     def __repr__(self):
         return self.nombre_producto
 
 
-
-
+# =========================
 # TABLA VENTA
 # =========================
 class Venta(db.Model):
+
     __tablename__ = "venta"
-
-# =========================
-# TABLA PROVEEDOR
-# =========================
-class Proveedor(db.Model):
-
-    _tablename_ = "proveedor"
-
-    id_proveedor = db.Column(db.Integer, primary_key=True)
-
-    nombre = db.Column(db.String(150), nullable=False)
-
-    telefono = db.Column(db.String(20))
-
-    direccion = db.Column(db.String(200))
--------------------------------------------------------------------------
-para clientes:
 
     id_venta = db.Column(db.Integer, primary_key=True)
     fecha = db.Column(db.Date, nullable=False)
+
     id_cliente = db.Column(db.Integer, db.ForeignKey("cliente.id_cliente"))
-    id = db.Column(db.Integer, db.ForeignKey("user.id"))  # <-- apunta a User.id
-    total = db.Column(db.Numeric(10,2))
+    id = db.Column(db.Integer, db.ForeignKey("user.id"))
+
+    total = db.Column(db.Numeric(10, 2))
 
     detalles = db.relationship("DetalleVenta", backref="venta")
 
-    # Relaciones para acceder a nombre directamente
     cliente = db.relationship("Cliente", backref="ventas")
-    user = db.relationship("User", backref="ventas")  # <-- relación con User
+    user = db.relationship("User", backref="ventas")
 
 
-
+# =========================
 # TABLA DETALLE_VENTA
 # =========================
 class DetalleVenta(db.Model):
@@ -169,10 +141,7 @@ class DetalleVenta(db.Model):
     )
 
     cantidad = db.Column(db.Integer, nullable=False)
-
-    precio_unitario = db.Column(db.Numeric(10,2))
-
-    subtotal = db.Column(db.Numeric(10,2))
+    precio_unitario = db.Column(db.Numeric(10, 2))
+    subtotal = db.Column(db.Numeric(10, 2))
 
     producto = db.relationship("Producto")
-
