@@ -6,6 +6,8 @@ from flask_admin import BaseView, expose
 from .extensions import admin_panel, db
 from .models import User, Producto, Categoria, Proveedor, Cliente, Venta, DetalleVenta
 
+from .models import User,Proveedor
+
 # =========================
 # CRUD protegido para admin
 # =========================
@@ -138,9 +140,7 @@ def configuracion_admin():
     # Solo admin ve usuarios
     admin_panel.add_view(SecurityModelView(User, db.session))
     admin_panel.add_view(SecurityModelView(Proveedor, db.session))
-    
 
-    # Vistas que pueden ver admin, vendedor o cajero
     admin_panel.add_view(ClienteAdmin(Cliente, db.session))
     admin_panel.add_view(RoleModelView(Categoria, db.session))
     admin_panel.add_view(RoleModelView(Producto, db.session))
